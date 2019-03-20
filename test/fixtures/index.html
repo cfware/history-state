@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; demo</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+
+			const bypass = document.querySelector('#bypass');
+			bypass.addEventListener('click', () => historyState.bypassDirty());
+
+			const dirty = document.querySelector('#dirty');
+			const resetText = () => {
+				if (historyState.dirty) {
+					dirty.textContent = 'Unset Dirty';
+				} else {
+					dirty.textContent = 'Set Dirty';
+				}
+			};
+
+			historyState.addEventListener('update', () => {
+				console.log('update:', location.href);
+				resetText();
+				bypass.style.display = 'none';
+			});
+
+			historyState.addEventListener('refuse', () => {
+				console.log('refuse:', location.href);
+				bypass.style.display = '';
+			});
+
+			dirty.addEventListener('click', () => {
+				historyState.dirty = !historyState.dirty;
+				resetText();
+			});
+
+			window.addEventListener('load', () => {
+				resetText();
+				dirty.style.display = '';
+			});
+		</script>
+	</head>
+	<body>
+		<a id="link1" href="/link1/">Link 1</a> |
+		<a id="link2" href="/link2/">Link 2</a> |
+		<a id="link3" href="/link3/">Link 3</a>
+		<button id="dirty" style="display:none"></button>
+		<button id="bypass" style="display:none">Bypass Dirty</button>
+	</body>
+</html>

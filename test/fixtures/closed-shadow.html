@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; closed shadow test</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+
+			/* globalize it for easier testing */
+			window.eventCounts = {
+				update: 0,
+				linkNotBlocked: 0
+			};
+			historyState.addEventListener('update', () => {
+				window.eventCounts.update++;
+			});
+			window.addEventListener('load', () => {
+				const test = document.querySelector('#test');
+				const shadowRoot = test.attachShadow({mode: 'closed'});
+				shadowRoot.innerHTML = '<a href="/link/">link</a>';
+				shadowRoot.addEventListener('click', event => {
+					window.eventCounts.linkNotBlocked++;
+					event.preventDefault();
+				});
+
+				window.shadowLink = shadowRoot.querySelector('a');
+				window.setupIntercept = function() {
+					historyState.linkInterceptor(shadowRoot);
+				};
+			});
+			window.historyState = historyState;
+		</script>
+	</head>
+	<body>
+		<div id="test"></div>
+	</body>
+</html>

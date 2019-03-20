@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; basic test</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+
+			/* globalize it for easier testing */
+			window.eventCounts = {
+				update: 0,
+				refuse: 0,
+				load: 0,
+				linkNotBlocked: 0,
+				blockedClick: 0
+			};
+			historyState.addEventListener('update', () => {
+				window.eventCounts.update++;
+			});
+			historyState.addEventListener('refuse', () => {
+				window.eventCounts.refuse++;
+			});
+			window.addEventListener('load', () => {
+				window.eventCounts.load++;
+			});
+			window.historyState = historyState;
+			window.loadTime = Date.now();
+			document.querySelector('#link').addEventListener('click', () => {
+				window.eventCounts.linkNotBlocked++;
+			});
+			document.querySelector('#blocked').addEventListener('click', event => {
+				window.eventCounts.blockedClick++;
+				event.preventDefault();
+			});
+		</script>
+	</head>
+	<body>
+		<a id="link" href="/link/">Link</a>
+		<a id="flink" href="/404.json" target="frame">In iframe</a>
+		<iframe id="frame" name="frame"></iframe>
+		<a id="blocked" href="https://example.com/">In iframe</a>
+	</body>
+</html>
