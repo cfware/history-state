@@ -11,11 +11,13 @@ class HistoryState extends EventTarget {
 		this._inRevert = false;
 
 		this._currentState = defaultState;
-		this._replaceState(history.state);
-
-		this.linkInterceptor(document);
+		this._updateState(history.state);
 
 		window.addEventListener('load', () => {
+			if (this.defaultIntercept !== false) {
+				this.linkInterceptor(document);
+			}
+
 			this._spaUpdate(true);
 			setTimeout(() => {
 				window.addEventListener('popstate', () => this._onpopstate());
@@ -43,7 +45,7 @@ class HistoryState extends EventTarget {
 				ele.blur();
 				event.preventDefault();
 				event.stopPropagation();
-				this.pushState(dest);
+				this.pushState(null, '', dest);
 			}
 		}, true);
 	}
@@ -70,13 +72,17 @@ class HistoryState extends EventTarget {
 		this.dispatchEvent(new Event('update'));
 	}
 
-	_replaceState(newSettings) {
-		history.replaceState(calculateState(0, {...this._currentState, ...newSettings}), '', location.href);
+	_updateState(newSettings, title, url) {
+		history.replaceState(calculateState(0, {...this._currentState, ...newSettings}), title, url);
 		this._currentState = history.state;
 	}
 
-	pushState(url) {
-		history.pushState(calculateState(1, {}), '', url);
+	replaceState(state, title, url) {
+		this._updateState({state}, title, url);
+	}
+
+	pushState(state, title, url) {
+		history.pushState(calculateState(1, {state}), title, url);
 		this._spaUpdate();
 	}
 
@@ -85,15 +91,11 @@ class HistoryState extends EventTarget {
 	}
 
 	set dirty(value) {
-		this._replaceState({dirty: value});
+		this._updateState({dirty: value});
 	}
 
-	get data() {
-		return this._currentState.data;
-	}
-
-	set data(value) {
-		this._replaceState({data: value});
+	get state() {
+		return this._currentState.state;
 	}
 
 	bypassDirty() {

@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; disable defaultIntercept test</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+
+			/* Need to set this before window.onload. */
+			historyState.defaultIntercept = false;
+
+			/* globalize it for easier testing */
+			window.eventCounts = {
+				update: 0,
+				refuse: 0,
+				linkNotIntercepted: 0
+			};
+			historyState.addEventListener('update', () => {
+				window.eventCounts.update++;
+			});
+			historyState.addEventListener('refuse', () => {
+				window.eventCounts.refuse++;
+			});
+			document.querySelector('#link').addEventListener('click', event => {
+				window.eventCounts.linkNotIntercepted++;
+				event.preventDefault();
+			});
+		</script>
+	</head>
+	<body>
+		<a id="link" href="/link/">link</a>
+	</body>
+</html>

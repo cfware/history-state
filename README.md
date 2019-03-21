@@ -42,18 +42,30 @@ This can be set true or false to indicate if the current page has unsaved change
 
 Default `false`
 
-### historyState.data
+### historyState.state
 
-This can be any serializable data.  This must be used instead of using
-`history.replaceState` to set state for the current page.
+This should be used instead of `history.state` which will contain additional fields
+that are internal to `@cfware/history-state`.
+
+Use `historyState.pushState` or `historyState.replaceState` to modify.  `historyState.state`
+should be treated as if it is frozen.
 
 Default `null`
 
-### historyState.pushState(url)
+### historyState.pushState(state, title, url)
 
 This must be used in place of `history.pushState`.  Adds a new history entry with blank
-data.  An `update` or `refuse` event will be dispatched.  This function is used internally
-when an `<a>` link is clicked.
+data.
+
+This function causes an `update` or `refuse` event to be dispatched.
+
+### historyState.replaceState(state, title, url)
+
+This must be used in place of `history.replaceState`.  This replaces the current history
+entry.
+
+Unlike `historyState.pushState` this function does not result in any call to `update` or
+`refuse`.  This function succeeds regardless of `dirty` status.
 
 ### historyState.linkInterceptor(element)
 
@@ -71,6 +83,7 @@ this.shadowRoot.innerHTML = '<a href="/link/">link</a>';
 historyState.linkInterceptor(shadowRoot);
 ```
 
+Any link click that is intercepted results in a call to `historyState.pushState`.
 
 ### historyState Events
 
@@ -84,16 +97,23 @@ This is dispatched when a location change is refused due to `historyState.dirty`
 true.  This will happen when the user hits back/forward without leaving the SPA or when
 an internal link is clicked.
 
-### window.beforeunload
+### window.onbeforeunload
 
 This component listens for `beforeunload`.  If `historyState.dirty` is true the unload
 will be canceled.
 
 ### <a> links
 
-This module will intercept clicks on `<a>` links.  Links to pages within `document.baseURI`
-will be treated as part of the SPA.  This is disabled by adding the `target`, `download` or
-`no-history-state` attributes.
+By default this module will intercept clicks on `<a>` links.  Links to pages within
+`document.baseURI` will be treated as part of the SPA.  This is disabled per link by
+adding the `target`, `download` or `no-history-state` attributes.
+
+The default click listener can be disabled by setting `historyState.defaultIntercept = false`
+before window.onload occurs.
+
+### window.onpopstate
+
+This event should be ignored, monitor the `update` event of `historyState` instead.
 
 ## Running tests
 

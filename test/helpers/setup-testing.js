@@ -3,6 +3,24 @@ import {setup, page} from '@cfware/ava-selenium-manager';
 import {FastifyTestHelper} from '@cfware/fastify-test-helper';
 import fastifyTestHelperConfig from './fastify-test-helper.config';
 
+page('no-intercept.html', async t => {
+	const {selenium} = t.context;
+	const link = await selenium.findElement({id: 'link'});
+	const eventCounts = {
+		update: 1,
+		refuse: 0,
+		linkNotIntercepted: 0
+	};
+
+	const getEventCounts = () => selenium.executeScript(() => window.eventCounts);
+
+	t.deepEqual(await getEventCounts(), eventCounts);
+
+	await link.click();
+	eventCounts.linkNotIntercepted++;
+	t.deepEqual(await getEventCounts(), eventCounts);
+});
+
 page('closed-shadow.html', async t => {
 	const {selenium} = t.context;
 	const eventCounts = {
@@ -35,7 +53,7 @@ page('history-state.html', async t => {
 	const getState = () => selenium.executeScript(() => ({
 		loadTime: window.loadTime,
 		index: history.state.index,
-		data: window.historyState.data,
+		state: window.historyState.state,
 		dirty: window.historyState.dirty,
 		location: location.pathname + location.search + location.hash
 	}));
@@ -43,7 +61,7 @@ page('history-state.html', async t => {
 	const initialState = {
 		loadTime: await selenium.executeScript(() => window.loadTime),
 		index: 0,
-		data: null,
+		state: null,
 		dirty: false,
 		location: '/history-state.html'
 	};
@@ -58,7 +76,7 @@ page('history-state.html', async t => {
 	};
 	const link1Data = {
 		...link1State,
-		data: 'JSON Bourne',
+		state: 'JSON Bourne',
 		dirty: true
 	};
 	const eventCounts = {
@@ -88,7 +106,7 @@ page('history-state.html', async t => {
 	t.deepEqual(await getState(), link1State);
 
 	await selenium.executeScript(() => {
-		window.historyState.data = 'JSON Bourne';
+		window.historyState.replaceState('JSON Bourne');
 		window.historyState.dirty = true;
 	});
 
