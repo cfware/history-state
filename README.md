@@ -64,8 +64,8 @@ This function causes an `update` or `refuse` event to be dispatched.
 This must be used in place of `history.replaceState`.  This replaces the current history
 entry.
 
-Unlike `historyState.pushState` this function does not result in any call to `update` or
-`refuse`.  This function succeeds regardless of `dirty` status.
+Unlike `historyState.pushState` this function does not cause `update` or `refuse` to be
+dispatched.  This function succeeds regardless of `dirty` status.
 
 ### historyState.linkInterceptor(element)
 
