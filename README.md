@@ -54,10 +54,8 @@ Default `null`
 
 ### historyState.pushState(state, title, url)
 
-This must be used in place of `history.pushState`.  Adds a new history entry with blank
-data.
-
-This function causes an `update` or `refuse` event to be dispatched.
+This must be used in place of `history.pushState`.  This function causes an `update` or
+`refuse` event to be dispatched depending on `historyState.dirty`.
 
 ### historyState.replaceState(state, title, url)
 
