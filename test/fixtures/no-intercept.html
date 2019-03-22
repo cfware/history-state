@@ -9,11 +9,13 @@
 			historyState.defaultIntercept = false;
 
 			/* globalize it for easier testing */
+			window.historyState = historyState;
 			window.eventCounts = {
 				update: 0,
 				refuse: 0,
 				linkNotIntercepted: 0
 			};
+
 			historyState.addEventListener('update', () => {
 				window.eventCounts.update++;
 			});

@@ -65,7 +65,7 @@ entry.
 Unlike `historyState.pushState` this function does not cause `update` or `refuse` to be
 dispatched.  This function succeeds regardless of `dirty` status.
 
-### historyState.linkInterceptor(element)
+### historyState.linkInterceptor(element, listenerOptions)
 
 This attaches a `click` event listener to `element` which intercepts normal clicks
 on any `<a>` element visible from `element`.  During startup this is run for `document`
@@ -82,6 +82,9 @@ historyState.linkInterceptor(shadowRoot);
 ```
 
 Any link click that is intercepted results in a call to `historyState.pushState`.
+
+The `listenerOptions` argument is passed to `element.addEventListener` as the second
+argument.
 
 ### historyState Events
 
@@ -108,6 +111,12 @@ adding the `target`, `download` or `no-history-state` attributes.
 
 The default click listener can be disabled by setting `historyState.defaultIntercept = false`
 before window.onload occurs.
+
+`historyState.defaultInterceptOptions` can be set before window.onload to provide options
+to the default interceptor.
+
+The link interceptor will not take any action if `event.preventDefault()` has already
+been run by another listener.
 
 ### window.onpopstate
 

@@ -19,6 +19,16 @@ page('no-intercept.html', async t => {
 	await link.click();
 	eventCounts.linkNotIntercepted++;
 	t.deepEqual(await getEventCounts(), eventCounts);
+
+	await selenium.executeScript(() => {
+		window.historyState.linkInterceptor(document);
+	});
+
+	/* The link itself has an onclick event which should prevent the non-capturing
+	 * interceptor from taking action. */
+	await link.click();
+	eventCounts.linkNotIntercepted++;
+	t.deepEqual(await getEventCounts(), eventCounts);
 });
 
 page('closed-shadow.html', async t => {

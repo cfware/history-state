@@ -5,6 +5,9 @@
 		<script type="module">
 			import historyState from './history-state.js';
 
+			/* Forces the document.onclick listener to capture events. */
+			historyState.defaultInterceptOptions = true;
+
 			/* globalize it for easier testing */
 			window.eventCounts = {
 				update: 0,

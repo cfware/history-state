@@ -15,7 +15,7 @@ class HistoryState extends EventTarget {
 
 		window.addEventListener('load', () => {
 			if (this.defaultIntercept !== false) {
-				this.linkInterceptor(document);
+				this.linkInterceptor(document, this.defaultInterceptOptions);
 			}
 
 			this._spaUpdate(true);
@@ -32,8 +32,12 @@ class HistoryState extends EventTarget {
 		});
 	}
 
-	linkInterceptor(listener) {
+	linkInterceptor(listener, listenerOptions) {
 		listener.addEventListener('click', event => {
+			if (event.defaultPrevented) {
+				return;
+			}
+
 			const ele = event.composedPath().filter(ele => ele.tagName === 'A')[0];
 
 			if (!isNormalLeftClick(event) || !isNormalLink(ele)) {
@@ -47,7 +51,7 @@ class HistoryState extends EventTarget {
 				event.stopPropagation();
 				this.pushState(null, '', dest);
 			}
-		}, true);
+		}, listenerOptions);
 	}
 
 	_onpopstate() {
