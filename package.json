@@ -1,6 +1,6 @@
 {
 	"name": "@cfware/history-state",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "Browser History API state manager",
 	"main": "history-state.js",
 	"scripts": {
