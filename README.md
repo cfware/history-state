@@ -10,9 +10,8 @@ Browser History API state manager.
 
 ### Install @cfware/history-state
 
-Testing this module requires node.js 8 or above.  This module makes no attempt to
-directly support legacy browsers, it is tested with the current version of Firefox
-and Chrome.
+This module makes no attempt to directly support legacy browsers, it is tested with
+the current version of Firefox and Chrome.
 
 ```sh
 npm i --save @cfware/history-state
