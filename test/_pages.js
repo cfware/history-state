@@ -161,16 +161,10 @@ page('history-state.html', async t => {
 	t.deepEqual(await getEventCounts(), eventCounts);
 	t.deepEqual(await getState(), link2State);
 
-	/* The event.returnValue test does not always work on Firefox, that's OK
-	 * because Firefox uses event.defaultPrevented. */
-	const caps = await selenium.getCapabilities();
-	const isFirefox = caps.getBrowserName() === 'firefox';
-
 	/* Simulate beforeunload in dirty state. */
-	t.deepEqual(await selenium.executeScript(isFirefox => {
+	t.true(await selenium.executeScript(() => {
 		let defaultPrevented = false;
 		const event = new Event('beforeunload');
-		event.returnValue = true;
 		event.preventDefault = () => {
 			defaultPrevented = true;
 		};
@@ -178,20 +172,13 @@ page('history-state.html', async t => {
 		window.historyState.dirty = true;
 		window.dispatchEvent(event);
 
-		return {
-			defaultPrevented,
-			returnValue: isFirefox || event.returnValue || false
-		};
-	}, isFirefox), {
-		defaultPrevented: true,
-		returnValue: isFirefox
-	});
+		return defaultPrevented;
+	}));
 
 	/* Simulate beforeunload in non-dirty state. */
-	t.deepEqual(await selenium.executeScript(() => {
+	t.false(await selenium.executeScript(() => {
 		let defaultPrevented = false;
 		const event = new Event('beforeunload');
-		event.returnValue = true;
 		event.preventDefault = () => {
 			defaultPrevented = true;
 		};
@@ -199,14 +186,8 @@ page('history-state.html', async t => {
 		window.historyState.dirty = false;
 		window.dispatchEvent(event);
 
-		return {
-			defaultPrevented,
-			returnValue: event.returnValue || false
-		};
-	}), {
-		defaultPrevented: false,
-		returnValue: true
-	});
+		return defaultPrevented;
+	}));
 });
 
 export function setupTesting(browserBuilder) {
