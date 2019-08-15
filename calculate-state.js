@@ -1,4 +1,4 @@
-import defaultState from './default-state';
+import defaultState from './default-state.js';
 
 const getIndex = state => (state && state.index) || 0;
 

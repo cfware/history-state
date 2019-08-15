@@ -1,7 +1,7 @@
-import calculateState from './calculate-state';
-import defaultState from './default-state';
-import isNormalLeftClick from './is-normal-left-click';
-import isNormalLink from './is-normal-link';
+import calculateState from './calculate-state.js';
+import defaultState from './default-state.js';
+import isNormalLeftClick from './is-normal-left-click.js';
+import isNormalLink from './is-normal-link.js';
 
 class HistoryState extends EventTarget {
 	constructor() {
