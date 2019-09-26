@@ -9,17 +9,23 @@ test('is not a link', t => {
 	t.false(isNormalLink({tagName: 'DIV'}));
 });
 
-test('is download link', t => t.false(isNormalLink({
-	tagName: 'A',
-	hasAttribute: name => name === 'download'
-})));
+test('is download link', t => {
+	t.false(isNormalLink({
+		tagName: 'A',
+		hasAttribute: name => name === 'download'
+	}));
+});
 
-test('is target link', t => t.false(isNormalLink({
-	tagName: 'A',
-	hasAttribute: name => name === 'target'
-})));
+test('is target link', t => {
+	t.false(isNormalLink({
+		tagName: 'A',
+		hasAttribute: name => name === 'target'
+	}));
+});
 
-test('is no-history-state link', t => t.false(isNormalLink({
-	tagName: 'A',
-	hasAttribute: name => name === 'no-history-state'
-})));
+test('is no-history-state link', t => {
+	t.false(isNormalLink({
+		tagName: 'A',
+		hasAttribute: name => name === 'no-history-state'
+	}));
+});
