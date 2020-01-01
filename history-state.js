@@ -4,13 +4,13 @@ import isNormalLeftClick from './is-normal-left-click.js';
 import isNormalLink from './is-normal-link.js';
 
 class HistoryState extends EventTarget {
+	_dirtyAttempt = 0;
+	_inRevert = false;
+	_currentState = defaultState;
+
 	constructor() {
 		super();
 
-		this._dirtyAttempt = 0;
-		this._inRevert = false;
-
-		this._currentState = defaultState;
 		this._updateState(history.state);
 
 		window.addEventListener('load', () => {
@@ -30,28 +30,6 @@ class HistoryState extends EventTarget {
 				event.returnValue = '';
 			}
 		});
-	}
-
-	linkInterceptor(listener, listenerOptions) {
-		listener.addEventListener('click', event => {
-			if (event.defaultPrevented) {
-				return;
-			}
-
-			const ele = event.composedPath().filter(ele => ele.tagName === 'A')[0];
-
-			if (!isNormalLeftClick(event) || !isNormalLink(ele)) {
-				return;
-			}
-
-			const dest = new URL(ele.href, location.href).toString();
-			if (dest.startsWith(document.baseURI.replace(/[?#].*/, ''))) {
-				ele.blur();
-				event.preventDefault();
-				event.stopPropagation();
-				this.pushState(null, '', dest);
-			}
-		}, listenerOptions);
 	}
 
 	_onpopstate() {
@@ -90,16 +68,43 @@ class HistoryState extends EventTarget {
 		this._spaUpdate();
 	}
 
+	get state() {
+		return this._currentState.state;
+	}
+
+	get length() {
+		return history.length;
+	}
+
+	get scrollRestoration() {
+		return history.scrollRestoration;
+	}
+
+	set scrollRestoration(value) {
+		history.scrollRestoration = value;
+	}
+
+	/* istanbul ignore next */
+	back() {
+		history.back();
+	}
+
+	/* istanbul ignore next */
+	forward() {
+		history.forward();
+	}
+
+	/* istanbul ignore next */
+	go(delta) {
+		history.go(delta);
+	}
+
 	get dirty() {
 		return this._currentState.dirty;
 	}
 
-	set dirty(value) {
-		this._updateState({dirty: value});
-	}
-
-	get state() {
-		return this._currentState.state;
+	set dirty(dirty) {
+		this._updateState({dirty});
 	}
 
 	bypassDirty() {
@@ -109,6 +114,27 @@ class HistoryState extends EventTarget {
 			this._currentState.dirty = false;
 			history.go(attempt);
 		}
+	}
+
+	linkInterceptor(listener, listenerOptions) {
+		listener.addEventListener('click', event => {
+			if (event.defaultPrevented || !isNormalLeftClick(event)) {
+				return;
+			}
+
+			const element = event.composedPath().filter(element => element.tagName === 'A')[0];
+			if (!isNormalLink(element)) {
+				return;
+			}
+
+			const destination = new URL(element.href, location.href).toString();
+			if (destination.startsWith(document.baseURI.replace(/[?#].*/u, ''))) {
+				element.blur();
+				event.preventDefault();
+				event.stopPropagation();
+				this.pushState(null, '', destination);
+			}
+		}, listenerOptions);
 	}
 }
 

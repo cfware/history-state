@@ -1,7 +1,9 @@
-/* global window, document, location, history, Event */
+import {promisify} from 'util';
 import {setup, page} from '@cfware/ava-selenium-manager';
 import {FastifyTestHelper} from '@cfware/fastify-test-helper';
-import fastifyTestHelperConfig from './_fastify-test-helper.config';
+import fastifyTestHelperConfig from './_fastify-test-helper.config.js';
+
+const delay = promisify(setTimeout);
 
 page('no-intercept.html', async t => {
 	const {selenium} = t.context;
@@ -29,6 +31,37 @@ page('no-intercept.html', async t => {
 	await link.click();
 	eventCounts.linkNotIntercepted++;
 	t.deepEqual(await getEventCounts(), eventCounts);
+});
+
+page('basic-info.html', async t => {
+	const {selenium} = t.context;
+
+	const testResults = await selenium.executeScript(() => window.testResults);
+	t.deepEqual(testResults, {
+		links: {
+			undef: false,
+			notLink: false,
+			download: false,
+			target: false,
+			noHistoryState: false,
+			normal: true
+		},
+		clicks: {
+			button1: false,
+			ctrlKey: false,
+			shiftKey: false,
+			altKey: false,
+			metaKey: false,
+			normal: true
+		},
+		scrollRestoration: {
+			initial: true,
+			auto1: true,
+			auto2: true,
+			manual1: true,
+			manual2: true
+		}
+	});
 });
 
 page('closed-shadow.html', async t => {
@@ -94,7 +127,8 @@ page('history-state.html', async t => {
 		refuse: 0,
 		load: 1,
 		linkNotBlocked: 0,
-		blockedClick: 0
+		blockedClick: 0,
+		lengthError: 0
 	};
 
 	t.deepEqual(await getEventCounts(), eventCounts);
@@ -152,6 +186,7 @@ page('history-state.html', async t => {
 	t.deepEqual(await getState(), link2State);
 
 	await flink.click();
+	await delay(100);
 	t.is(await selenium.executeScript(() => document.querySelector('#frame').contentWindow.location.pathname), '/404.json');
 	t.deepEqual(await getEventCounts(), eventCounts);
 	t.deepEqual(await getState(), link2State);

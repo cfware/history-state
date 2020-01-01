@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; basic-info test</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+			import isNormalLink from './is-normal-link.js';
+			import isNormalLeftClick from './is-normal-left-click.js';
+
+			window.addEventListener('load', () => {
+				const scrollRestorationEqual = () => history.scrollRestoration === historyState.scrollRestoration;
+				const scrollRestoration = {
+					initial: scrollRestorationEqual()
+				};
+
+				historyState.scrollRestoration = 'auto';
+				scrollRestoration.auto1 = scrollRestorationEqual();
+
+				historyState.scrollRestoration = 'manual';
+				scrollRestoration.manual1 = scrollRestorationEqual();
+
+				history.scrollRestoration = 'auto';
+				scrollRestoration.auto2 = scrollRestorationEqual();
+
+				history.scrollRestoration = 'manual';
+				scrollRestoration.manual2 = scrollRestorationEqual();
+
+				window.testResults = {
+					links: {
+						undef: isNormalLink(),
+						notLink: isNormalLink(document.querySelector('#not-link')),
+						download: isNormalLink(document.querySelector('#download')),
+						target: isNormalLink(document.querySelector('#target')),
+						noHistoryState: isNormalLink(document.querySelector('#no-history-state')),
+						normal: isNormalLink(document.querySelector('#normal'))
+					},
+					clicks: {
+						button1: isNormalLeftClick({button: 1}),
+						ctrlKey: isNormalLeftClick({button: 0, ctrlKey: true}),
+						shiftKey: isNormalLeftClick({button: 0, shiftKey: true}),
+						altKey: isNormalLeftClick({button: 0, altKey: true}),
+						metaKey: isNormalLeftClick({button: 0, metaKey: true}),
+						normal: isNormalLeftClick({button: 0})
+					},
+					scrollRestoration
+				};
+			});
+		</script>
+	</head>
+	<body>
+		<div id="not-link"></div>
+		<a id="download" href="/link1/" download>Link 1</a>
+		<a id="target" href="/link2/" target>Link 2</a>
+		<a id="no-history-state" href="/link3/" no-history-state>Link 3</a>
+		<a id="normal" href="/link4/">Link 4</a>
+	</body>
+</html>
