@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/cfware/history-state/compare/v0.3.1...v0.4.0) (2020-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use nullish coalescing and optional chaining
+
+### Features
+
+* Expand API to cover all window.history fields ([1665aae](https://github.com/cfware/history-state/commit/1665aae23029348e6aeaf295ae87fcc5a6d2199e))
+
 ### [0.3.1](https://github.com/cfware/history-state/compare/v0.3.0...v0.3.1) (2019-06-05)
 
 
