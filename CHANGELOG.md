@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/cfware/history-state/compare/v0.4.0...v0.4.1) (2020-02-07)
+
+
+### Bug Fixes
+
+* Add test.js to npmignore ([fdeab34](https://github.com/cfware/history-state/commit/fdeab34fef43fb2d68eb9a7fcc60753e92ab14ed))
+
 ## [0.4.0](https://github.com/cfware/history-state/compare/v0.3.1...v0.4.0) (2020-02-07)
 
 
