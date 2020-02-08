@@ -1,11 +1,9 @@
 import defaultState from './default-state.js';
 
-const getIndex = state => (state && state.index) || 0;
-
-export default function calculateState(delta, prevState) {
+export default function calculateState(delta, previousState) {
 	return {
 		...defaultState,
-		...prevState,
-		index: getIndex(history.state) + delta
+		...previousState,
+		index: (history.state?.index ?? 0) + delta
 	};
 }

@@ -14,23 +14,34 @@
 				refuse: 0,
 				load: 0,
 				linkNotBlocked: 0,
-				blockedClick: 0
+				blockedClick: 0,
+				lengthError: 0
+			};
+			const checkLength = () => {
+				if (history.length !== historyState.length) {
+					window.eventCounts.lengthError++;
+				}
 			};
 			historyState.addEventListener('update', () => {
+				checkLength();
 				window.eventCounts.update++;
 			});
 			historyState.addEventListener('refuse', () => {
+				checkLength();
 				window.eventCounts.refuse++;
 			});
 			window.addEventListener('load', () => {
+				checkLength();
 				window.eventCounts.load++;
 			});
 			window.historyState = historyState;
 			window.loadTime = Date.now();
 			document.querySelector('#link').addEventListener('click', () => {
+				checkLength();
 				window.eventCounts.linkNotBlocked++;
 			});
 			document.querySelector('#blocked').addEventListener('click', event => {
+				checkLength();
 				window.eventCounts.blockedClick++;
 				event.preventDefault();
 			});

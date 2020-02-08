@@ -1,5 +1,13 @@
 export default function isNormalLink(node) {
-	const bannedAttrs = ['download', 'target', 'no-history-state'];
+	if (node?.tagName !== 'A') {
+		return false;
+	}
 
-	return node && node.tagName === 'A' && bannedAttrs.every(attr => !node.hasAttribute(attr));
+	for (const bannedAttribute of ['download', 'target', 'no-history-state']) {
+		if (node.hasAttribute(bannedAttribute)) {
+			return false;
+		}
+	}
+
+	return true;
 }
