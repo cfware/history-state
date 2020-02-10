@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/cfware/history-state/compare/v0.4.1...v0.4.2) (2020-02-10)
+
+
+### Bug Fixes
+
+* Remove nullish coalescing operator ([982a243](https://github.com/cfware/history-state/commit/982a243c75d4fedc58659b930946d898851d21e1))
+
 ### [0.4.1](https://github.com/cfware/history-state/compare/v0.4.0...v0.4.1) (2020-02-07)
 
 
