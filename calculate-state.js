@@ -4,6 +4,6 @@ export default function calculateState(delta, previousState) {
 	return {
 		...defaultState,
 		...previousState,
-		index: (history.state?.index ?? 0) + delta
+		index: (history.state?.index || 0) + delta
 	};
 }
