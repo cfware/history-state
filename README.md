@@ -1,6 +1,6 @@
 # @cfware/history-state
 
-[![Travis CI][travis-image]][travis-url]
+![Tests][tests-status]
 [![Greenkeeper badge][gk-image]](https://greenkeeper.io/)
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -132,8 +132,7 @@ npm test
 
 [npm-image]: https://img.shields.io/npm/v/@cfware/history-state.svg
 [npm-url]: https://npmjs.org/package/@cfware/history-state
-[travis-image]: https://travis-ci.org/cfware/history-state.svg?branch=master
-[travis-url]: https://travis-ci.org/cfware/history-state
+[tests-status]: https://github.com/cfware/cleanable-interval/workflows/Tests/badge.svg
 [gk-image]: https://badges.greenkeeper.io/cfware/history-state.svg
 [downloads-image]: https://img.shields.io/npm/dm/@cfware/history-state.svg
 [downloads-url]: https://npmjs.org/package/@cfware/history-state
