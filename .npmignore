@@ -4,6 +4,6 @@ coverage
 nyc.config.cjs
 package
 .eslintrc.json
-.travis.yml
+.github
 fixtures
 test.js
