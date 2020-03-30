@@ -132,7 +132,7 @@ npm test
 
 [npm-image]: https://img.shields.io/npm/v/@cfware/history-state.svg
 [npm-url]: https://npmjs.org/package/@cfware/history-state
-[tests-status]: https://github.com/cfware/cleanable-interval/workflows/Tests/badge.svg
+[tests-status]: https://github.com/cfware/history-state/workflows/Tests/badge.svg
 [gk-image]: https://badges.greenkeeper.io/cfware/history-state.svg
 [downloads-image]: https://img.shields.io/npm/dm/@cfware/history-state.svg
 [downloads-url]: https://npmjs.org/package/@cfware/history-state
