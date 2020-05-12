@@ -221,6 +221,31 @@ const pages = {
 
 			return defaultPrevented;
 		}));
+	},
+	async 'check-proxy.html'(t, selenium) {
+		const state = {
+			errors: 0,
+			back: 0,
+			forward: 0,
+			go: 0,
+			goDelta: undefined
+		};
+		const checkState = async () => {
+			t.same(state, await selenium.executeScript(() => window.testState));
+		};
+
+		await selenium.executeScript(() => window.historyState.back());
+		state.back++;
+		await checkState();
+
+		await selenium.executeScript(() => window.historyState.forward());
+		state.forward++;
+		await checkState();
+
+		await selenium.executeScript(() => window.historyState.go(-1));
+		state.go++;
+		state.goDelta = [-1];
+		await checkState();
 	}
 };
 

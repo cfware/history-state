@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>&lt;history-state&gt; check proxy</title>
+		<base href="/">
+		<script type="module">
+			import historyState from './history-state.js';
+
+			const testState = {
+				errors: 0,
+				back: 0,
+				forward: 0,
+				go: 0,
+				goDelta: undefined
+			};
+
+			Object.assign(window, {testState, historyState});
+
+			Object.assign(history, {
+				back() {
+					if (this !== history) {
+						testState.errors++;
+					}
+
+					testState.back++;
+				},
+				forward() {
+					if (this !== history) {
+						testState.errors++;
+					}
+
+					testState.forward++;
+				},
+				go(...args) {
+					if (this !== history) {
+						testState.errors++;
+					}
+
+					testState.go++;
+					testState.goDelta = args;
+				}
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

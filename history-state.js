@@ -84,17 +84,14 @@ class HistoryState extends EventTarget {
 		history.scrollRestoration = value;
 	}
 
-	/* istanbul ignore next */
 	back() {
 		history.back();
 	}
 
-	/* istanbul ignore next */
 	forward() {
 		history.forward();
 	}
 
-	/* istanbul ignore next */
 	go(delta) {
 		history.go(delta);
 	}
