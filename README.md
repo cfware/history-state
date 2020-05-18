@@ -1,21 +1,6 @@
-# @cfware/history-state
-
-![Tests][tests-status]
-[![Greenkeeper badge][gk-image]](https://greenkeeper.io/)
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![MIT][license-image]](LICENSE)
+# @cfware/history-state [![NPM Version][npm-image]][npm-url]
 
 Browser History API state manager.
-
-### Install @cfware/history-state
-
-This module makes no attempt to directly support legacy browsers, it is tested with
-the current version of Firefox and Chrome.
-
-```sh
-npm i --save @cfware/history-state
-```
 
 ## Usage
 
@@ -121,19 +106,6 @@ been run by another listener.
 
 This event should be ignored, monitor the `update` event of `historyState` instead.
 
-## Running tests
-
-Tests are provided by xo and ava.
-
-```sh
-npm install
-npm test
-```
 
 [npm-image]: https://img.shields.io/npm/v/@cfware/history-state.svg
 [npm-url]: https://npmjs.org/package/@cfware/history-state
-[tests-status]: https://github.com/cfware/history-state/workflows/Tests/badge.svg
-[gk-image]: https://badges.greenkeeper.io/cfware/history-state.svg
-[downloads-image]: https://img.shields.io/npm/dm/@cfware/history-state.svg
-[downloads-url]: https://npmjs.org/package/@cfware/history-state
-[license-image]: https://img.shields.io/npm/l/@cfware/history-state.svg
