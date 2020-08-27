@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/cfware/history-state/compare/v0.4.2...v0.4.3) (2020-08-27)
+
+
+### Features
+
+* Add navigateTo function ([c7765d6](https://github.com/cfware/history-state/commit/c7765d6c3ddd0c8acf29eeb3e5902fb688a06a31))
+
 ### [0.4.2](https://github.com/cfware/history-state/compare/v0.4.1...v0.4.2) (2020-02-10)
 
 
