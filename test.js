@@ -115,6 +115,16 @@ const pages = {
 			...link1State,
 			index: 2
 		};
+		const manualState1 = {
+			...link2State,
+			index: 3,
+			location: '/link/manual/'
+		};
+		const manualState2 = {
+			...manualState1,
+			index: 4,
+			location: '/manual/'
+		};
 		const link1Data = {
 			...link1State,
 			state: 'JSON Bourne',
@@ -221,6 +231,12 @@ const pages = {
 
 			return defaultPrevented;
 		}));
+
+		await selenium.executeScript(() => window.navigateTo('manual/'));
+		t.same(await getState(), manualState1);
+
+		await selenium.executeScript(() => window.navigateTo('../../manual/'));
+		t.same(await getState(), manualState2);
 	},
 	async 'check-proxy.html'(t, selenium) {
 		const state = {

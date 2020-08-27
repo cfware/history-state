@@ -3,7 +3,7 @@
 		<title>&lt;history-state&gt; basic test</title>
 		<base href="/">
 		<script type="module">
-			import historyState from './history-state.js';
+			import historyState, {navigateTo} from './history-state.js';
 
 			/* Forces the document.onclick listener to capture events. */
 			historyState.defaultInterceptOptions = true;
@@ -17,6 +17,7 @@
 				blockedClick: 0,
 				lengthError: 0
 			};
+			window.navigateTo = navigateTo;
 			const checkLength = () => {
 				if (history.length !== historyState.length) {
 					window.eventCounts.lengthError++;

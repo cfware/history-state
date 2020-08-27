@@ -119,7 +119,7 @@ class HistoryState extends EventTarget {
 				return;
 			}
 
-			const element = event.composedPath().filter(element => element.tagName === 'A')[0];
+			const element = event.composedPath().find(element => element.tagName === 'A');
 			if (!isNormalLink(element)) {
 				return;
 			}
@@ -135,4 +135,10 @@ class HistoryState extends EventTarget {
 	}
 }
 
-export default new HistoryState();
+const historyState = new HistoryState();
+
+export function navigateTo(url) {
+	historyState.pushState(null, '', new URL(url, location.href).href);
+}
+
+export default historyState;
