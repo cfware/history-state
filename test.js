@@ -46,7 +46,8 @@ const pages = {
 				download: false,
 				target: false,
 				noHistoryState: false,
-				normal: true
+				normal: true,
+				noHREF: false
 			},
 			clicks: {
 				button1: false,

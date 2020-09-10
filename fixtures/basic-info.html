@@ -32,7 +32,8 @@
 						download: isNormalLink(document.querySelector('#download')),
 						target: isNormalLink(document.querySelector('#target')),
 						noHistoryState: isNormalLink(document.querySelector('#no-history-state')),
-						normal: isNormalLink(document.querySelector('#normal'))
+						normal: isNormalLink(document.querySelector('#normal')),
+						noHREF: isNormalLink(document.querySelector('#no-href'))
 					},
 					clicks: {
 						button1: isNormalLeftClick({button: 1}),
@@ -53,5 +54,6 @@
 		<a id="target" href="/link2/" target>Link 2</a>
 		<a id="no-history-state" href="/link3/" no-history-state>Link 3</a>
 		<a id="normal" href="/link4/">Link 4</a>
+		<a id="no-href">Link 5</a>
 	</body>
 </html>

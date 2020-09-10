@@ -1,5 +1,5 @@
 export default function isNormalLink(node) {
-	if (node?.tagName !== 'A') {
+	if (node?.tagName !== 'A' || !node.href) {
 		return false;
 	}
 
