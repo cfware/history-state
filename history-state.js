@@ -3,73 +3,28 @@ import defaultState from './default-state.js';
 import isNormalLeftClick from './is-normal-left-click.js';
 import isNormalLink from './is-normal-link.js';
 
+let dirtyAttempt = 0;
+let inRevert = false;
+let currentState = defaultState;
+let defaultInterceptOptions;
+
+const updateState = (newSettings, title, url) => {
+	history.replaceState(calculateState(0, {...currentState, ...newSettings}), title, url);
+	currentState = history.state;
+};
+
 class HistoryState extends EventTarget {
-	_dirtyAttempt = 0;
-	_inRevert = false;
-	_currentState = defaultState;
-
-	constructor() {
-		super();
-
-		this._updateState(history.state);
-
-		window.addEventListener('load', () => {
-			if (this.defaultIntercept !== false) {
-				this.linkInterceptor(document, this.defaultInterceptOptions);
-			}
-
-			this._spaUpdate(true);
-			setTimeout(() => {
-				window.addEventListener('popstate', () => this._onpopstate());
-			}, 0);
-		});
-
-		window.addEventListener('beforeunload', event => {
-			if (this._currentState.dirty) {
-				event.preventDefault();
-				event.returnValue = '';
-			}
-		});
-	}
-
-	_onpopstate() {
-		if (this._inRevert) {
-			this._inRevert = false;
-			this.dispatchEvent(new Event('refuse'));
-			return;
-		}
-
-		this._spaUpdate();
-	}
-
-	_spaUpdate(initializing) {
-		if (this.dirty && !initializing) {
-			this._inRevert = true;
-			this._dirtyAttempt = history.state.index - this._currentState.index;
-			history.go(-this._dirtyAttempt);
-			return;
-		}
-
-		this._currentState = history.state;
-		this.dispatchEvent(new Event('update'));
-	}
-
-	_updateState(newSettings, title, url) {
-		history.replaceState(calculateState(0, {...this._currentState, ...newSettings}), title, url);
-		this._currentState = history.state;
-	}
-
 	replaceState(state, title, url) {
-		this._updateState({state}, title, url);
+		updateState({state}, title, url);
 	}
 
 	pushState(state, title, url) {
 		history.pushState(calculateState(1, {state}), title, url);
-		this._spaUpdate();
+		spaUpdate();
 	}
 
 	get state() {
-		return this._currentState.state;
+		return currentState.state;
 	}
 
 	get length() {
@@ -95,50 +50,87 @@ class HistoryState extends EventTarget {
 	go(delta) {
 		history.go(delta);
 	}
-
-	get dirty() {
-		return this._currentState.dirty;
-	}
-
-	set dirty(dirty) {
-		this._updateState({dirty});
-	}
-
-	bypassDirty() {
-		const attempt = this._dirtyAttempt;
-		if (attempt !== 0) {
-			this._dirtyAttempt = 0;
-			this._currentState.dirty = false;
-			history.go(attempt);
-		}
-	}
-
-	linkInterceptor(listener, listenerOptions) {
-		listener.addEventListener('click', event => {
-			if (event.defaultPrevented || !isNormalLeftClick(event)) {
-				return;
-			}
-
-			const element = event.composedPath().find(element => element.tagName === 'A');
-			if (!isNormalLink(element)) {
-				return;
-			}
-
-			const destination = new URL(element.href, location.href).toString();
-			if (destination.startsWith(document.baseURI.replace(/[?#].*/u, ''))) {
-				element.blur();
-				event.preventDefault();
-				event.stopPropagation();
-				this.pushState(null, '', destination);
-			}
-		}, listenerOptions);
-	}
 }
+
+updateState(history.state);
+
+window.addEventListener('load', () => {
+	if (defaultInterceptOptions !== false) {
+		linkInterceptor(document, defaultInterceptOptions);
+	}
+
+	spaUpdate(true);
+	setTimeout(() => window.addEventListener('popstate', onpopstate), 0);
+});
+
+window.addEventListener('beforeunload', event => {
+	if (currentState.dirty) {
+		event.preventDefault();
+		event.returnValue = '';
+	}
+});
 
 const historyState = new HistoryState();
 
-export function navigateTo(url) {
-	historyState.pushState(null, '', new URL(url, location.href).href);
-}
+const spaUpdate = initializing => {
+	if (currentState.dirty && !initializing) {
+		inRevert = true;
+		dirtyAttempt = history.state.index - currentState.index;
+		history.go(-dirtyAttempt);
+		return;
+	}
+
+	currentState = history.state;
+	historyState.dispatchEvent(new Event('update'));
+};
+
+const onpopstate = () => {
+	if (inRevert) {
+		inRevert = false;
+		historyState.dispatchEvent(new Event('refuse'));
+	} else {
+		spaUpdate();
+	}
+};
+
+export const navigateTo = url => historyState.pushState(null, '', new URL(url, location.href).href);
+
+export const linkInterceptor = (listener, listenerOptions) => {
+	listener.addEventListener('click', event => {
+		if (event.defaultPrevented || !isNormalLeftClick(event)) {
+			return;
+		}
+
+		const element = event.composedPath().find(element => element.tagName === 'A');
+		if (!isNormalLink(element)) {
+			return;
+		}
+
+		const destination = new URL(element.href, location.href).toString();
+		if (destination.startsWith(document.baseURI.replace(/[?#].*/u, ''))) {
+			element.blur();
+			event.preventDefault();
+			event.stopPropagation();
+			historyState.pushState(null, '', destination);
+		}
+	}, listenerOptions);
+};
+
+export const setDefaultInterceptOptions = options => {
+	defaultInterceptOptions = options;
+};
+
+export const bypassDirty = () => {
+	if (dirtyAttempt !== 0) {
+		const attempt = dirtyAttempt;
+		dirtyAttempt = 0;
+		currentState.dirty = false;
+		history.go(attempt);
+	}
+};
+
+export const setDirty = dirty => updateState({dirty});
+
+export const isDirty = () => currentState.dirty;
 
 export default historyState;

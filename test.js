@@ -28,7 +28,7 @@ const pages = {
 		t.same(await getEventCounts(), eventCounts);
 
 		await selenium.executeScript(() => {
-			window.historyState.linkInterceptor(document);
+			window.linkInterceptor(document);
 		});
 
 		/* The link itself has an onclick event which should prevent the non-capturing
@@ -96,7 +96,7 @@ const pages = {
 			loadTime: window.loadTime,
 			index: history.state.index,
 			state: window.historyState.state,
-			dirty: window.historyState.dirty,
+			dirty: window.isDirty(),
 			location: location.pathname + location.search + location.hash
 		}));
 		const getEventCounts = () => selenium.executeScript(() => window.eventCounts);
@@ -160,7 +160,7 @@ const pages = {
 
 		await selenium.executeScript(() => {
 			window.historyState.replaceState('JSON Bourne');
-			window.historyState.dirty = true;
+			window.setDirty(true);
 		});
 
 		t.same(await getState(), link1Data);
@@ -170,12 +170,12 @@ const pages = {
 		t.same(await getEventCounts(), eventCounts);
 		t.same(await getState(), link1Data);
 
-		await selenium.executeScript(() => window.historyState.bypassDirty());
+		await selenium.executeScript(() => window.bypassDirty());
 		eventCounts.update++;
 		t.same(await getEventCounts(), eventCounts);
 		t.same(await getState(), initialState);
 
-		await selenium.executeScript(() => window.historyState.bypassDirty());
+		await selenium.executeScript(() => window.bypassDirty());
 		t.same(await getEventCounts(), eventCounts);
 		t.same(await getState(), initialState);
 
@@ -189,7 +189,7 @@ const pages = {
 		t.same(await getEventCounts(), eventCounts);
 		t.same(await getState(), link1Data);
 
-		await selenium.executeScript(() => window.historyState.bypassDirty());
+		await selenium.executeScript(() => window.bypassDirty());
 		eventCounts.update++;
 		t.same(await getEventCounts(), eventCounts);
 		t.same(await getState(), link2State);
@@ -213,7 +213,7 @@ const pages = {
 				defaultPrevented = true;
 			};
 
-			window.historyState.dirty = true;
+			window.setDirty(true);
 			window.dispatchEvent(event);
 
 			return defaultPrevented;
@@ -227,7 +227,7 @@ const pages = {
 				defaultPrevented = true;
 			};
 
-			window.historyState.dirty = false;
+			window.setDirty(false);
 			window.dispatchEvent(event);
 
 			return defaultPrevented;

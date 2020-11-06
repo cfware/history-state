@@ -1,4 +1,4 @@
-export default function isNormalLink(node) {
+export default node => {
 	if (node?.tagName !== 'A' || !node.href) {
 		return false;
 	}
@@ -10,4 +10,4 @@ export default function isNormalLink(node) {
 	}
 
 	return true;
-}
+};

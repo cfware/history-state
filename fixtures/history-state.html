@@ -3,10 +3,10 @@
 		<title>&lt;history-state&gt; basic test</title>
 		<base href="/">
 		<script type="module">
-			import historyState, {navigateTo} from './history-state.js';
+			import historyState, {linkInterceptor, setDefaultInterceptOptions, navigateTo, isDirty, setDirty, bypassDirty} from './history-state.js';
 
-			/* Forces the document.onclick listener to capture events. */
-			historyState.defaultInterceptOptions = true;
+			/* Force the document.onclick listener to capture events. */
+			setDefaultInterceptOptions(true);
 
 			/* globalize it for easier testing */
 			window.eventCounts = {
@@ -17,7 +17,12 @@
 				blockedClick: 0,
 				lengthError: 0
 			};
+			window.historyState = historyState;
 			window.navigateTo = navigateTo;
+			window.isDirty = isDirty;
+			window.setDirty = setDirty;
+			window.bypassDirty = bypassDirty;
+
 			const checkLength = () => {
 				if (history.length !== historyState.length) {
 					window.eventCounts.lengthError++;
@@ -35,7 +40,6 @@
 				checkLength();
 				window.eventCounts.load++;
 			});
-			window.historyState = historyState;
 			window.loadTime = Date.now();
 			document.querySelector('#link').addEventListener('click', () => {
 				checkLength();

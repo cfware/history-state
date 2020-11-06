@@ -3,13 +3,13 @@
 		<title>&lt;history-state&gt; disable defaultIntercept test</title>
 		<base href="/">
 		<script type="module">
-			import historyState from './history-state.js';
+			import historyState, {linkInterceptor, setDefaultInterceptOptions} from './history-state.js';
 
-			/* Need to set this before window.onload. */
-			historyState.defaultIntercept = false;
+			/* Need to call this before window.onload. */
+			setDefaultInterceptOptions(false);
 
 			/* globalize it for easier testing */
-			window.historyState = historyState;
+			window.linkInterceptor = linkInterceptor;
 			window.eventCounts = {
 				update: 0,
 				refuse: 0,

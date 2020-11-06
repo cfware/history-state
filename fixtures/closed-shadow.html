@@ -3,11 +3,10 @@
 		<title>&lt;history-state&gt; closed shadow test</title>
 		<base href="/">
 		<script type="module">
-			import historyState from './history-state.js';
+			import historyState, {linkInterceptor, setDefaultInterceptOptions} from './history-state.js';
 
-			/* Do this to ensure that closed shadowRoot is not seen by main
-			 * linkInterceptor. */
-			historyState.defaultInterceptOptions = true;
+			/* Do this to ensure that closed shadowRoot is not seen by main linkInterceptor. */
+			setDefaultInterceptOptions(true);
 
 			/* globalize it for easier testing */
 			window.eventCounts = {
@@ -30,10 +29,9 @@
 				window.setupIntercept = function() {
 					// The true option forces the link interceptor to run before
 					// the direct listener.
-					historyState.linkInterceptor(shadowRoot, true);
+					linkInterceptor(shadowRoot, true);
 				};
 			});
-			window.historyState = historyState;
 		</script>
 	</head>
 	<body>
