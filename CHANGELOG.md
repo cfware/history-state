@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/cfware/history-state/compare/v0.4.4...v0.5.0) (2020-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Refactor API to improve tersing
+
+### Features
+
+* Refactor API to improve tersing ([ad58038](https://github.com/cfware/history-state/commit/ad58038ff49492bcc59565f8d6cc02835eeb1c4e))
+
 ### [0.4.4](https://github.com/cfware/history-state/compare/v0.4.3...v0.4.4) (2020-09-11)
 
 
