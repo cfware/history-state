@@ -1,6 +1,6 @@
-import path from 'path';
-import {fileURLToPath} from 'url';
-import {promisify} from 'util';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {promisify} from 'node:util';
 
 import t from 'libtap';
 import {testBrowser} from '@cfware/tap-selenium-manager';
