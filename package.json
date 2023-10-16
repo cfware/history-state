@@ -1,40 +1,40 @@
 {
-	"name": "@cfware/history-state",
-	"version": "0.5.0",
-	"description": "Browser History API state manager",
-	"main": "history-state.js",
-	"type": "module",
-	"scripts": {
-		"pretest": "cfware-lint .",
-		"tests-only": "nyc -s node test.js|tap-yaml-summary",
-		"test": "npm run -s tests-only",
-		"posttest": "nyc report --check-coverage"
-	},
-	"engines": {
-		"node": ">=16.12.0"
-	},
-	"author": "Corey Farrell",
-	"license": "MIT",
-	"keywords": [
-		"spa",
-		"history-api",
-		"browser"
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/cfware/history-state.git"
-	},
-	"bugs": {
-		"url": "https://github.com/cfware/history-state/issues"
-	},
-	"homepage": "https://github.com/cfware/history-state#readme",
-	"devDependencies": {
-		"@cfware/fastify-test-helper": "^0.8.0",
-		"@cfware/lint": "^3.0.4",
-		"@cfware/nyc": "^0.7.1",
-		"@cfware/tap-selenium-manager": "^2.0.0",
-		"libtap": "^1.4.0",
-		"nyc": "^15.1.0",
-		"tap-yaml-summary": "^0.2.0"
-	}
+    "name": "@cfware/history-state",
+    "version": "0.5.0",
+    "description": "Browser History API state manager",
+    "main": "history-state.js",
+    "type": "module",
+    "scripts": {
+        "pretest": "cfware-lint .",
+        "tests-only": "nyc -s node test.js|tap-yaml-summary",
+        "test": "npm run -s tests-only",
+        "posttest": "nyc report --check-coverage"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "author": "Corey Farrell",
+    "license": "MIT",
+    "keywords": [
+        "spa",
+        "history-api",
+        "browser"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cfware/history-state.git"
+    },
+    "bugs": {
+        "url": "https://github.com/cfware/history-state/issues"
+    },
+    "homepage": "https://github.com/cfware/history-state#readme",
+    "devDependencies": {
+        "@cfware/fastify-test-helper": "^1",
+        "@cfware/lint": "^4",
+        "@cfware/nyc": "^1",
+        "@cfware/tap-selenium-manager": "^3",
+        "libtap": "^1",
+        "nyc": "^15",
+        "tap-yaml-summary": "^0.2"
+    }
 }
