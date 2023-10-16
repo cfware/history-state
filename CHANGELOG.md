@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/cfware/history-state/compare/v0.5.0...v1.0.0) (2023-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade development dependencies
+
+### Bug Fixes
+
+* Upgrade development dependencies ([2b29cba](https://github.com/cfware/history-state/commit/2b29cbaedba4d1b713242960cba968824ed6d570))
+
 ## [0.5.0](https://github.com/cfware/history-state/compare/v0.4.4...v0.5.0) (2020-11-06)
 
 
